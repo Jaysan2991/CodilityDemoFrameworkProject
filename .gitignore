@@ -255,3 +255,5 @@ paket-files/
 
 # CodeRush
 .cr/
+.vs/CodilityDemoFrameworkProject/DesignTimeBuild/.dtbcache.v2
+.vs/CodilityDemoFrameworkProject/v16/.suo

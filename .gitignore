@@ -258,4 +258,8 @@ paket-files/
 .vs/CodilityDemoFrameworkProject/DesignTimeBuild/.dtbcache.v2
 .vs/CodilityDemoFrameworkProject/v16/.suo
 CodilityDemoFrameworkProject/obj/Debug/netcoreapp3.1/DemoFramework.csproj.FileListAbsolute.txt
-DemoTest/obj/Debug/netcoreapp3.1/DemoTest.csproj.AssemblyReference.cache
+*.cache
+*.dll
+*.pdb
+obj/
+bin/

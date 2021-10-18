@@ -3,6 +3,8 @@ using DemoTest.Pages;
 using TechTalk.SpecFlow;
 using TechTalk.SpecFlow.Assist;
 using DemoFramework.Config;
+using System.Collections.Generic;
+using System;
 
 namespace DemoTest.Steps
 {
@@ -16,6 +18,8 @@ namespace DemoTest.Steps
         {
             _parallelConfig = parallelConfig;
         }
+
+        IList<String> Product = new List<String> { "Black pants", "Modern", "Single Shirt", "Top pants upper" };
 
 
         public void NavigateToSite()
@@ -38,10 +42,10 @@ namespace DemoTest.Steps
         [Given(@"I add four different products to my wishlist")]
         public void GivenIAddFourDifferentProductsToMyWishlist()
         {
-            _parallelConfig.CurrentPage.As<HomePage>().AddFirstProductTowishlist();
-            _parallelConfig.CurrentPage.As<HomePage>().AddSecondProductTowishlist();
-            _parallelConfig.CurrentPage.As<HomePage>().AddThirdProductTowishlist();
-            _parallelConfig.CurrentPage.As<HomePage>().AddFourthProductTowishlist();
+            _parallelConfig.CurrentPage.As<HomePage>().AddFirstProductTowishlist(Product);
+            _parallelConfig.CurrentPage.As<HomePage>().AddSecondProductTowishlist(Product);
+            _parallelConfig.CurrentPage.As<HomePage>().AddThirdProductTowishlist(Product);
+            _parallelConfig.CurrentPage.As<HomePage>().AddFourthProductTowishlist(Product);
         }
 
         [When(@"I veiw my wishlist table")]
@@ -54,25 +58,26 @@ namespace DemoTest.Steps
         public void ThenIFindTotalFourSelectedItemsInMyWishlist()
         {
             _parallelConfig.CurrentPage = new WishListPage(_parallelConfig);
-            _parallelConfig.CurrentPage.As<WishListPage>().VerifyProductsInWishlist();
+            _parallelConfig.CurrentPage.As<WishListPage>().VerifyProductsInWishlist(Product);
         }
 
         [When(@"I search for lowest price product")]
         public void WhenISearchForLowestPriceProduct()
         {
-
+            _parallelConfig.CurrentPage.As<WishListPage>().CheckForLowestPriceProduct();
         }
 
         [Then(@"I am able to add the lowest price item to my cart")]
         public void ThenIAmAbleToAddTheLowestPriceItemtoMyCart()
         {
-
+            _parallelConfig.CurrentPage.As<WishListPage>().goToCartPage();
         }
 
         [Then(@"I am able to verify the item in my cart")]
         public void ThenIAmAbleToVerifyTheItemInMyCart()
         {
-
+            _parallelConfig.CurrentPage = new CustomerCartPage(_parallelConfig);
+            _parallelConfig.CurrentPage.As<CustomerCartPage>().VerifyItemInCart(Product);
         }
 
 

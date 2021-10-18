@@ -7,6 +7,8 @@ using DemoFramework.Base;
 using DemoFramework.Extensions;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
+using OpenQA.Selenium.Support.UI;
 
 namespace DemoTest.Pages
 {
@@ -19,7 +21,7 @@ namespace DemoTest.Pages
 
         IWebElement CookieButton => _parallelConfig.Driver.FindByLinkText("Accept all");
 
-        IWebElement ProductAddedPopUp => _parallelConfig.Driver.FindByLinkText("Accept all");
+        IWebElement ProductAddedPopUp => _parallelConfig.Driver.FindByLinkText("#yith-wcwl-popup-message > #yith-wcwl-message");
 
         IWebElement FirstProduct => _parallelConfig.Driver.FindElementByCssSelector("div > a[data-product-id='17']");
 
@@ -30,6 +32,10 @@ namespace DemoTest.Pages
         IWebElement FourthProduct => _parallelConfig.Driver.FindElementByCssSelector("div > a[data-product-id='23']");
 
         IWebElement WishlistMenu => _parallelConfig.Driver.FindElementByCssSelector("a[title='Wishlist']");
+
+        IList<IWebElement> ProductsName => _parallelConfig.Driver.FindElementsByCssSelector("h2.woocommerce-loop-product__title");
+
+
 
         public void VerifyHomePageTitle()
         {
@@ -44,30 +50,53 @@ namespace DemoTest.Pages
             return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddFirstProductTowishlist()
+        public bool VerifyProductExist(IList<String> Name)
         {
-            
+            foreach(IWebElement ProdName in ProductsName)
+            {
+                String ProductName = ProdName.GetAttribute("innerText");
+                if (Name.Contains(ProductName))
+                {
+                    return true;
+                }
+               
+            }
+            return false;
+        }
+
+        public HomePage AddFirstProductTowishlist(IList<String> Name)
+        {
+            Actions actions = new Actions(_parallelConfig.Driver);
+            actions.MoveToElement(FirstProduct);
+            actions.Perform();
+            VerifyProductExist(Name);
             FirstProduct.AssertElementPresent();
             FirstProduct.Click();
             return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddSecondProductTowishlist()
+        public HomePage AddSecondProductTowishlist(IList<String> Name)
         {
+            Actions actions = new Actions(_parallelConfig.Driver);
+            actions.MoveToElement(SecondProduct);
+            actions.Perform();
+            VerifyProductExist(Name);
             SecondProduct.AssertElementPresent();
             SecondProduct.Click();
             return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddThirdProductTowishlist()
+        public HomePage AddThirdProductTowishlist(IList<String> Name)
         {
+            VerifyProductExist(Name);
             ThirdProduct.AssertElementPresent();
             ThirdProduct.Click();
             return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddFourthProductTowishlist()
+        public HomePage AddFourthProductTowishlist(IList<String> Name)
         {
+            VerifyProductExist(Name);
             FourthProduct.AssertElementPresent();
             FourthProduct.Click();
             return new HomePage(_parallelConfig);

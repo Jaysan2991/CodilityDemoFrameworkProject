@@ -263,3 +263,4 @@ CodilityDemoFrameworkProject/obj/Debug/netcoreapp3.1/DemoFramework.csproj.FileLi
 *.pdb
 obj/
 bin/
+DemoTest/Features/AddProduct.feature.cs

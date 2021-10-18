@@ -41,28 +41,18 @@ namespace DemoFramework.Base
             switch (driverOptions)
             {
                 case InternetExplorerOptions internetExplorerOptions:
-                    //ToDo: Set the Desired capabilities
-                    driverOptions = new InternetExplorerOptions();
+                    //ToDo
                     break;
                 case FirefoxOptions firefoxOptions:
-                    firefoxOptions.AddAdditionalCapability(CapabilityType.BrowserName, "firefox");
-                    firefoxOptions.AddAdditionalCapability(CapabilityType.Platform, new Platform(PlatformType.Windows));
-                    firefoxOptions.BrowserExecutableLocation = @"C:\Program Files (x86)\Mozilla Firefox\firefox.exe";
+                    //To Do
                     break;
                 case ChromeOptions chromeOptions:
                     chromeOptions.AddAdditionalCapability(CapabilityType.EnableProfiling, true, true);
                     break;
             }
 
-            _parallelConfig.Driver = new RemoteWebDriver(new Uri("http://192.168.0.178:4444/wd/hub"),driverOptions.ToCapabilities());
+            _parallelConfig.Driver = new RemoteWebDriver(new Uri("http://localhost:4444/wd/hub"),driverOptions.ToCapabilities());
         }
-
-        public virtual void NaviateSite()
-        {
-            //DriverContext.Browser.GoToUrl(Settings.AUT);
-            LogHelpers.Write("Opened the browser !!!");
-        }
-
 
         public DriverOptions GetBrowserOption(BrowserType browserType)
         {

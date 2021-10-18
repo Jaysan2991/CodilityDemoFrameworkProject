@@ -34,13 +34,6 @@ namespace DemoFramework.Extensions
         }
 
 
-        //public static void Hover(this IWebElement element)
-        //{
-        //    Actions actions = new Actions(DriverContext.Driver);
-        //    actions.MoveToElement(element).Perform();
-        //}
-
-
         public static void AssertElementPresent(this IWebElement element)
         {
             if (!IsElementPresent(element))

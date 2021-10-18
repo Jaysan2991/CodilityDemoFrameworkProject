@@ -22,6 +22,8 @@ namespace DemoTest.Pages
 
         IWebElement lnkLogoff => _parallelConfig.Driver.FindByLinkText("Log off");
 
+        
+
 
         internal void CheckIfLoginExist()
         {

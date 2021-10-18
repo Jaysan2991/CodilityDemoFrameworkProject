@@ -6,7 +6,7 @@ using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Gherkin.Model;
 using NUnit.Framework;
-//Same parallel
+//For parallel execution
 //[assembly: Parallelizable(ParallelScope.Fixtures)]
 
 namespace DemoTest.Hooks
@@ -32,7 +32,6 @@ namespace DemoTest.Hooks
 
         private static ExtentTest featureName;
         private static ExtentReports extent;
-        private static ExtentKlovReporter klov;
 
 
         [AfterStep]
@@ -79,26 +78,12 @@ namespace DemoTest.Hooks
         [BeforeTestRun]
         public static void TestInitalize()
         {
-            //InitializeSettings();
-            //Settings.ApplicationCon = Settings.ApplicationCon.DBConnect(Settings.AppConnectionString);
-
+            
             //Initialize Extent report before test starts
-            var htmlReporter = new ExtentHtmlReporter(@"C:\extentreport\SeleniumWithSpecflow\SpecflowParallelTest\ExtentReport.html");
+            var htmlReporter = new ExtentHtmlReporter(@"C:\extentreport\SeleniumWithSpecflow\ExtentReport.html");
             htmlReporter.Config.Theme = AventStack.ExtentReports.Reporter.Configuration.Theme.Dark;
             //Attach report to reporter
-            extent = new AventStack.ExtentReports.ExtentReports();
-            klov = new ExtentKlovReporter();
-
-            //klov.InitMongoDbConnection("localhost", 27017);
-
-            //klov.ProjectName = "ExecuteAutomation Test";
-
-            //// URL of the KLOV server
-            //klov.KlovUrl = "http://localhost:5689";
-
-            //klov.ReportName = "Karthik KK" + DateTime.Now.ToString();
-
-
+            extent = new ExtentReports();
             extent.AttachReporter(htmlReporter);
         }
 
@@ -120,8 +105,6 @@ namespace DemoTest.Hooks
         [AfterScenario]
         public void TestStop()
         {
-            //DriverContext.Driver.Quit();
-            //Flush report once test completes
             _parallelConfig.Driver.Quit();
         }
 

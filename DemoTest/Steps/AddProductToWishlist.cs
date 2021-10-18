@@ -20,7 +20,10 @@ namespace DemoTest.Steps
 
         public void NavigateToSite()
         {
+            _parallelConfig.Driver.Manage().Window.Maximize();
+            _parallelConfig.Driver.Manage().Cookies.DeleteAllCookies();
             _parallelConfig.Driver.Navigate().GoToUrl(Settings.AUT);
+            
 
         }
 
@@ -28,23 +31,30 @@ namespace DemoTest.Steps
         public void GivenIhaveNavigatedToTestDemoWebsite()
         {
             NavigateToSite();
+            _parallelConfig.CurrentPage = new HomePage(_parallelConfig);
+            _parallelConfig.CurrentPage.As<HomePage>().AcceptCookieButton();
         }
 
         [Given(@"I add four different products to my wishlist")]
         public void GivenIAddFourDifferentProductsToMyWishlist()
         {
+            _parallelConfig.CurrentPage.As<HomePage>().AddFirstProductTowishlist();
+            _parallelConfig.CurrentPage.As<HomePage>().AddSecondProductTowishlist();
+            _parallelConfig.CurrentPage.As<HomePage>().AddThirdProductTowishlist();
+            _parallelConfig.CurrentPage.As<HomePage>().AddFourthProductTowishlist();
         }
 
         [When(@"I veiw my wishlist table")]
         public void WhenIViewMyWishlistTable()
         {
-
+            _parallelConfig.CurrentPage.As<HomePage>().goToWishlistPage();
         }
 
         [Then(@"I find total four selected items in my wishlist")]
         public void ThenIFindTotalFourSelectedItemsInMyWishlist()
         {
-
+            _parallelConfig.CurrentPage = new WishListPage(_parallelConfig);
+            _parallelConfig.CurrentPage.As<WishListPage>().VerifyProductsInWishlist();
         }
 
         [When(@"I search for lowest price product")]

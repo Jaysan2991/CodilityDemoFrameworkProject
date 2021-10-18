@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Threading;
 using DemoFramework.Base;
 using DemoFramework.Extensions;
+using NUnit.Framework;
 using OpenQA.Selenium;
 
 namespace DemoTest.Pages
@@ -14,44 +17,68 @@ namespace DemoTest.Pages
 
         }
 
-        IWebElement lnkLogin => _parallelConfig.Driver.FindByLinkText("Login");
+        IWebElement CookieButton => _parallelConfig.Driver.FindByLinkText("Accept all");
 
-        IWebElement lnkEmployeeList => _parallelConfig.Driver.FindByLinkText("Employee List");
+        IWebElement ProductAddedPopUp => _parallelConfig.Driver.FindByLinkText("Accept all");
 
-        IWebElement lnkLoggedInUser => _parallelConfig.Driver.FindByXpath("//a[@title='Manage']");
+        IWebElement FirstProduct => _parallelConfig.Driver.FindElementByCssSelector("div > a[data-product-id='17']");
 
-        IWebElement lnkLogoff => _parallelConfig.Driver.FindByLinkText("Log off");
+        IWebElement SecondProduct => _parallelConfig.Driver.FindElementByCssSelector("div > a[data-product-id='14']");
 
-        
+        IWebElement ThirdProduct => _parallelConfig.Driver.FindElementByCssSelector("div > a[data-product-id='20']");
 
+        IWebElement FourthProduct => _parallelConfig.Driver.FindElementByCssSelector("div > a[data-product-id='23']");
 
-        internal void CheckIfLoginExist()
+        IWebElement WishlistMenu => _parallelConfig.Driver.FindElementByCssSelector("a[title='Wishlist']");
+
+        public void VerifyHomePageTitle()
         {
-            lnkLogin.AssertElementPresent();
+            String pageTitle = _parallelConfig.Driver.Title.ToString();
+            Assert.That(pageTitle, Is.EqualTo("TESTSCRIPTDEMO – Automation Practice"));
         }
 
+        public HomePage AcceptCookieButton()
+        {
+            VerifyHomePageTitle();
+            CookieButton.Click();
+            return new HomePage(_parallelConfig);
+        }
 
-        //internal LoginPage ClickLogin()
-        //{
-        //    lnkLogin.Click();
-        //    return new LoginPage(_parallelConfig);
-        //}
+        public HomePage AddFirstProductTowishlist()
+        {
+            
+            FirstProduct.AssertElementPresent();
+            FirstProduct.Click();
+            return new HomePage(_parallelConfig);
+        }
 
-        //internal string GetLoggedInUser()
-        //{
-        //    return lnkLoggedInUser.GetLinkText();
-        //}
+        public HomePage AddSecondProductTowishlist()
+        {
+            SecondProduct.AssertElementPresent();
+            SecondProduct.Click();
+            return new HomePage(_parallelConfig);
+        }
 
-        //public EmployeeListPage ClickEmployeeList()
-        //{
-        //    lnkEmployeeList.Click();
-        //    return new EmployeeListPage(_parallelConfig);
-        //}
+        public HomePage AddThirdProductTowishlist()
+        {
+            ThirdProduct.AssertElementPresent();
+            ThirdProduct.Click();
+            return new HomePage(_parallelConfig);
+        }
 
-        //public LoginPage ClickLogOff()
-        //{
-        //    lnkLogoff.Click();
-        //    return new LoginPage(_parallelConfig);
-        //}
+        public HomePage AddFourthProductTowishlist()
+        {
+            FourthProduct.AssertElementPresent();
+            FourthProduct.Click();
+            return new HomePage(_parallelConfig);
+        }
+
+        public HomePage goToWishlistPage()
+        {
+            if (WishlistMenu.IsElementPresent()) { WishlistMenu.Click(); }
+
+            return new HomePage(_parallelConfig);
+        }
+                
     }
 }

@@ -63,13 +63,13 @@ namespace DemoTest.Steps
         [When(@"I search for lowest price product")]
         public void WhenISearchForLowestPriceProduct()
         {
-            _parallelConfig.CurrentPage.As<WishListPage>().CheckForLowestPriceProduct();
+            _parallelConfig.CurrentPage.As<WishListPage>().CheckForLowestPriceProduct(Product);
         }
 
         [Then(@"I am able to add the lowest price item to my cart")]
         public void ThenIAmAbleToAddTheLowestPriceItemtoMyCart()
         {
-            
+            _parallelConfig.CurrentPage.As<WishListPage>().AddLowestPriceProductBasket();
         }
 
         [Then(@"I am able to verify the item in my cart")]

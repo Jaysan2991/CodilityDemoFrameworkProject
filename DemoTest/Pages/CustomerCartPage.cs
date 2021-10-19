@@ -42,6 +42,7 @@ namespace DemoTest.Pages
 
         public void VerifyItemInCart(IList<String> Name)
         {
+            VerifyPageTitle();
             VerifyProductAddedToCart(Name);
         }
 

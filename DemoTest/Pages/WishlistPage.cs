@@ -6,6 +6,7 @@ using DemoFramework.Base;
 using DemoFramework.Extensions;
 using NUnit.Framework;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Interactions;
 
 namespace DemoTest.Pages
 {
@@ -16,15 +17,14 @@ namespace DemoTest.Pages
 
         }
 
-        IWebElement FirstProduct_InWishlist => _parallelConfig.Driver.FindElementByCssSelector("#yith-wcwl-row-17");
-
-        IWebElement SecondProduct_InWishlist => _parallelConfig.Driver.FindElementByCssSelector("#yith-wcwl-row-14");
-
-        IWebElement ThirdProduct_InWishlist => _parallelConfig.Driver.FindElementByCssSelector("#yith-wcwl-row-20");
-
-        IWebElement FourthProduct_InWishlist => _parallelConfig.Driver.FindElementByCssSelector("#yith-wcwl-row-23");
-
         IWebElement CartOptions => _parallelConfig.Driver.FindElementByCssSelector("a[title='Cart'] > i");
+
+        IList<IWebElement> ProductsInWIshList => _parallelConfig.Driver.FindElementsByCssSelector("tbody.wishlist-items-wrapper > tr");
+
+        IWebElement AddedToCartAlert => _parallelConfig.Driver.FindElementByCssSelector("div.woocommerce-message");
+
+
+        static String productName;
 
 
         public void VerifyPageTitle()
@@ -36,63 +36,123 @@ namespace DemoTest.Pages
 
         public bool VerifyProductExistInWIshlist(IList<String> Name)
         {
-            IList<IWebElement> ProductsName = new List<IWebElement>();
-            ProductsName.Add(FirstProduct_InWishlist);
-            ProductsName.Add(SecondProduct_InWishlist);
-            ProductsName.Add(ThirdProduct_InWishlist);
-            ProductsName.Add(FourthProduct_InWishlist);
             int Counter = 0;
 
-            foreach (IWebElement ProdName in ProductsName)
+            foreach (IWebElement ProdName in ProductsInWIshList)
             {
-                String ProductName = ProdName.FindElement(By.ClassName("product-name")).GetLinkText();
+                String ProductName = ProdName.FindElement(By.CssSelector("td.product-name")).GetLinkText();
                 if (Name.Contains(ProductName))
                 {
                     Counter++;
                 }
 
             }
-            if (Counter == ProductsName.Count) return true;
+            if (Counter == ProductsInWIshList.Count) return true;
             else return false;
         }
 
         public void VerifyProductsInWishlist(IList<String> Name)
         {
             VerifyPageTitle();
-            VerifyProductExistInWIshlist(Name);
+            Assert.That(VerifyProductExistInWIshlist(Name), Is.True);
         }
 
-        public void CheckForLowestPriceProduct()
+        public void CheckForLowestPriceProduct(IList<String> Name)
         {
-            IList<IWebElement> ProdcutPrice = new List<IWebElement>();
+            IDictionary<String, String> ProductPrice = new Dictionary<String, String>();
 
-            //foreach (IWebElement Price in ProdcurPrice)
-            //{
-            //    String ProductName = ProdName.FindElement(By.ClassName("product-name")).GetLinkText();
-            //    if (Name.Contains(ProductName))
-            //    {
-            //        Count++;
-            //    }
+            foreach (IWebElement ProdName in ProductsInWIshList)
+            {
+                String ProductName = ProdName.FindElement(By.CssSelector("td.product-name")).GetLinkText();
+                if (Name.Contains(ProductName))
+                {
+                    String Price = ProdName.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
+                    ProductPrice.Add(ProductName, Price);
+                }
 
-            //}
-            String Price1 = FirstProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
-            String Price2 = SecondProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
-            String Price3= ThirdProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
-            String Price4 = FourthProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
+            }
 
-            AddLowestPriceProductBasket();
+            IDictionary<String, float> PPrice = CheckPrice(ProductPrice);
 
+            FindLowestPriceOfProduct(PPrice);
+
+
+        }
+
+
+        public IDictionary<String, float> CheckPrice(IDictionary<String, String> ProdPrice) 
+        {
+            IDictionary<String, float> ProductPriceForCompare = new Dictionary<String, float>();
+            foreach (KeyValuePair<String, String> price in ProdPrice)
+            {
+                String[] pp = price.Value.Split();
+
+                if(pp.Length > 1)
+                {
+                    if (pp.Length == 3)
+                    {
+                        float costOfItem = float.Parse(pp[0].Trim('£'));
+                        ProductPriceForCompare.Add(price.Key, costOfItem);
+                    }
+                    else
+                    {
+                        float costOfItem = float.Parse(pp[1].Trim('£'));
+                        ProductPriceForCompare.Add(price.Key, costOfItem);
+                    }
+
+                }
+
+                else
+                {
+                    float costOfItem = float.Parse(pp[0].Trim('£'));
+                    ProductPriceForCompare.Add(price.Key, costOfItem);
+                }
+
+            }
+
+            return ProductPriceForCompare;
+
+
+        }
+
+        public void FindLowestPriceOfProduct(IDictionary<String, float> PPrice)
+        {
+            float price = float.MaxValue;
+            foreach(KeyValuePair<String, float> IndividualPrice in PPrice)
+            {
+                if(IndividualPrice.Value < price)
+                {
+                    price = IndividualPrice.Value;
+                    productName = IndividualPrice.Key;
+                }
+
+            }
         }
 
         public void AddLowestPriceProductBasket()
         {
 
-            ThirdProduct_InWishlist.FindElement(By.CssSelector("td.product-add-to-cart > a")).Click();
+            foreach (IWebElement ProdName in ProductsInWIshList)
+            {
+                String ProductName = ProdName.FindElement(By.CssSelector("td.product-name")).GetLinkText();
+                if (ProductName.Equals(productName))
+                {
+                    IWebElement AddTocCart_product = ProdName.FindElement(By.CssSelector("td.product-add-to-cart > a"));
+                    AddTocCart_product.IsElementPresent();
+                    AddTocCart_product.Click();
+
+                }
+
+            }
 
         }
 
         public CustomerCartPage goToCartPage()
         {
+            
+            Actions actions = new Actions(_parallelConfig.Driver);
+            actions.MoveToElement(CartOptions);
+            actions.Perform();
             if (CartOptions.IsElementPresent()) { CartOptions.Click(); }
 
             return new CustomerCartPage(_parallelConfig);

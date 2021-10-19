@@ -71,6 +71,16 @@ namespace DemoTest.Pages
             VerifyProductExist(Name);
             FirstProduct.AssertElementPresent();
             FirstProduct.Click();
+            WaitForProductAddedPopUpToDisappear();
+        }
+
+        public void WaitForProductAddedPopUpToDisappear()
+        {
+            try
+            {
+                while (ProductAddedPopUp.IsElementPresent()) { }
+            }
+            catch { }
         }
 
         public void AddSecondProductTowishlist(IList<String> Name)
@@ -81,6 +91,7 @@ namespace DemoTest.Pages
             VerifyProductExist(Name);
             SecondProduct.AssertElementPresent();
             SecondProduct.Click();
+            WaitForProductAddedPopUpToDisappear();
         }
 
         public void AddThirdProductTowishlist(IList<String> Name)
@@ -88,6 +99,7 @@ namespace DemoTest.Pages
             VerifyProductExist(Name);
             ThirdProduct.AssertElementPresent();
             ThirdProduct.Click();
+            WaitForProductAddedPopUpToDisappear();
         }
 
         public void AddFourthProductTowishlist(IList<String> Name)
@@ -95,6 +107,7 @@ namespace DemoTest.Pages
             VerifyProductExist(Name);
             FourthProduct.AssertElementPresent();
             FourthProduct.Click();
+            WaitForProductAddedPopUpToDisappear();
         }
 
         public WishListPage goToWishlistPage()

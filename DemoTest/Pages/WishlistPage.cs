@@ -41,17 +41,19 @@ namespace DemoTest.Pages
             ProductsName.Add(SecondProduct_InWishlist);
             ProductsName.Add(ThirdProduct_InWishlist);
             ProductsName.Add(FourthProduct_InWishlist);
+            int Counter = 0;
 
             foreach (IWebElement ProdName in ProductsName)
             {
                 String ProductName = ProdName.FindElement(By.ClassName("product-name")).GetLinkText();
                 if (Name.Contains(ProductName))
                 {
-                    return true;
+                    Counter++;
                 }
 
             }
-            return false;
+            if (Counter == ProductsName.Count) return true;
+            else return false;
         }
 
         public void VerifyProductsInWishlist(IList<String> Name)
@@ -62,6 +64,21 @@ namespace DemoTest.Pages
 
         public void CheckForLowestPriceProduct()
         {
+            IList<IWebElement> ProdcutPrice = new List<IWebElement>();
+
+            //foreach (IWebElement Price in ProdcurPrice)
+            //{
+            //    String ProductName = ProdName.FindElement(By.ClassName("product-name")).GetLinkText();
+            //    if (Name.Contains(ProductName))
+            //    {
+            //        Count++;
+            //    }
+
+            //}
+            String Price1 = FirstProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
+            String Price2 = SecondProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
+            String Price3= ThirdProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
+            String Price4 = FourthProduct_InWishlist.FindElement(By.CssSelector("td.product-price")).GetAttribute("innerText");
 
             AddLowestPriceProductBasket();
 

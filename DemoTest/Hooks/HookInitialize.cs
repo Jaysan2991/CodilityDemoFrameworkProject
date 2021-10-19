@@ -6,6 +6,7 @@ using AventStack.ExtentReports;
 using AventStack.ExtentReports.Reporter;
 using AventStack.ExtentReports.Gherkin.Model;
 using NUnit.Framework;
+using System.Reflection;
 //For parallel execution
 //[assembly: Parallelizable(ParallelScope.Fixtures)]
 
@@ -42,18 +43,19 @@ namespace DemoTest.Hooks
 
             if (_scenarioContext.TestError == null)
             {
+                var mediaEntityPass = _parallelConfig.CaptureScreenshotAndReturnModel(_scenarioContext.ScenarioInfo.Title.Trim());
                 if (stepType == "Given")
-                    _currentScenarioName.CreateNode<Given>(_scenarioContext.StepContext.StepInfo.Text);
+                    _currentScenarioName.CreateNode<Given>(_scenarioContext.StepContext.StepInfo.Text).Pass("Step Pass:Given", mediaEntityPass);
                 else if (stepType == "When")
-                    _currentScenarioName.CreateNode<When>(_scenarioContext.StepContext.StepInfo.Text);
+                    _currentScenarioName.CreateNode<When>(_scenarioContext.StepContext.StepInfo.Text).Pass("Step Pass:When", mediaEntityPass);
                 else if (stepType == "Then")
-                    _currentScenarioName.CreateNode<Then>(_scenarioContext.StepContext.StepInfo.Text);
+                    _currentScenarioName.CreateNode<Then>(_scenarioContext.StepContext.StepInfo.Text).Pass("Step Pass:Then", mediaEntityPass);
                 else if (stepType == "And")
-                    _currentScenarioName.CreateNode<And>(_scenarioContext.StepContext.StepInfo.Text);
+                    _currentScenarioName.CreateNode<And>(_scenarioContext.StepContext.StepInfo.Text).Pass("Step Pass:And", mediaEntityPass);
             }
             else if (_scenarioContext.TestError != null)
             {
-                //screenshot in the Base64 format
+                //screenshot in the Base64 formatr
                 var mediaEntity = _parallelConfig.CaptureScreenshotAndReturnModel(_scenarioContext.ScenarioInfo.Title.Trim());
 
                 if (stepType == "Given")
@@ -80,7 +82,7 @@ namespace DemoTest.Hooks
         {
             
             //Initialize Extent report before test starts
-            var htmlReporter = new ExtentHtmlReporter(@"C:\extentreport\SeleniumWithSpecflow\ExtentReport.html");
+            var htmlReporter = new ExtentHtmlReporter(GetResourcePath()+@"\"+ "ExtentReport.html");
             htmlReporter.Config.Theme = AventStack.ExtentReports.Reporter.Configuration.Theme.Dark;
             //Attach report to reporter
             extent = new ExtentReports();
@@ -114,6 +116,20 @@ namespace DemoTest.Hooks
             //Flush report once test completes
             extent.Flush();
 
+        }
+
+
+        public static string GetResourcePath()
+        {
+            string ResourcePath = "";
+
+            try
+            {
+                string ProjPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                ResourcePath = ProjPath + @"\Resources";
+            }
+            catch { }
+            return ResourcePath;
         }
 
 

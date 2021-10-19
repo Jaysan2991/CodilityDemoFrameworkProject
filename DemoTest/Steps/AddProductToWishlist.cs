@@ -69,12 +69,13 @@ namespace DemoTest.Steps
         [Then(@"I am able to add the lowest price item to my cart")]
         public void ThenIAmAbleToAddTheLowestPriceItemtoMyCart()
         {
-            _parallelConfig.CurrentPage = _parallelConfig.CurrentPage.As<WishListPage>().goToCartPage();
+            
         }
 
         [Then(@"I am able to verify the item in my cart")]
         public void ThenIAmAbleToVerifyTheItemInMyCart()
         {
+            _parallelConfig.CurrentPage = _parallelConfig.CurrentPage.As<WishListPage>().goToCartPage();
             _parallelConfig.CurrentPage.As<CustomerCartPage>().VerifyItemInCart(Product);
         }
 

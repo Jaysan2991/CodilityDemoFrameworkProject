@@ -51,13 +51,12 @@ namespace DemoTest.Steps
         [When(@"I veiw my wishlist table")]
         public void WhenIViewMyWishlistTable()
         {
-            _parallelConfig.CurrentPage.As<HomePage>().goToWishlistPage();
+            _parallelConfig.CurrentPage = _parallelConfig.CurrentPage.As<HomePage>().goToWishlistPage();
         }
 
         [Then(@"I find total four selected items in my wishlist")]
         public void ThenIFindTotalFourSelectedItemsInMyWishlist()
         {
-            _parallelConfig.CurrentPage = new WishListPage(_parallelConfig);
             _parallelConfig.CurrentPage.As<WishListPage>().VerifyProductsInWishlist(Product);
         }
 
@@ -70,13 +69,12 @@ namespace DemoTest.Steps
         [Then(@"I am able to add the lowest price item to my cart")]
         public void ThenIAmAbleToAddTheLowestPriceItemtoMyCart()
         {
-            _parallelConfig.CurrentPage.As<WishListPage>().goToCartPage();
+            _parallelConfig.CurrentPage = _parallelConfig.CurrentPage.As<WishListPage>().goToCartPage();
         }
 
         [Then(@"I am able to verify the item in my cart")]
         public void ThenIAmAbleToVerifyTheItemInMyCart()
         {
-            _parallelConfig.CurrentPage = new CustomerCartPage(_parallelConfig);
             _parallelConfig.CurrentPage.As<CustomerCartPage>().VerifyItemInCart(Product);
         }
 

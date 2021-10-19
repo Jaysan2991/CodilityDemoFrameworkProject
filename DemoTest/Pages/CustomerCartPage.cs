@@ -40,10 +40,9 @@ namespace DemoTest.Pages
 
         }
 
-        public CustomerCartPage VerifyItemInCart(IList<String> Name)
+        public void VerifyItemInCart(IList<String> Name)
         {
             VerifyProductAddedToCart(Name);
-            return new CustomerCartPage(_parallelConfig);
         }
 
 

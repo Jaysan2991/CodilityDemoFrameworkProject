@@ -43,11 +43,10 @@ namespace DemoTest.Pages
             Assert.That(pageTitle, Is.EqualTo("TESTSCRIPTDEMO – Automation Practice"));
         }
 
-        public HomePage AcceptCookieButton()
+        public void AcceptCookieButton()
         {
             VerifyHomePageTitle();
             CookieButton.Click();
-            return new HomePage(_parallelConfig);
         }
 
         public bool VerifyProductExist(IList<String> Name)
@@ -64,7 +63,7 @@ namespace DemoTest.Pages
             return false;
         }
 
-        public HomePage AddFirstProductTowishlist(IList<String> Name)
+        public void AddFirstProductTowishlist(IList<String> Name)
         {
             Actions actions = new Actions(_parallelConfig.Driver);
             actions.MoveToElement(FirstProduct);
@@ -72,10 +71,9 @@ namespace DemoTest.Pages
             VerifyProductExist(Name);
             FirstProduct.AssertElementPresent();
             FirstProduct.Click();
-            return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddSecondProductTowishlist(IList<String> Name)
+        public void AddSecondProductTowishlist(IList<String> Name)
         {
             Actions actions = new Actions(_parallelConfig.Driver);
             actions.MoveToElement(SecondProduct);
@@ -83,30 +81,27 @@ namespace DemoTest.Pages
             VerifyProductExist(Name);
             SecondProduct.AssertElementPresent();
             SecondProduct.Click();
-            return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddThirdProductTowishlist(IList<String> Name)
+        public void AddThirdProductTowishlist(IList<String> Name)
         {
             VerifyProductExist(Name);
             ThirdProduct.AssertElementPresent();
             ThirdProduct.Click();
-            return new HomePage(_parallelConfig);
         }
 
-        public HomePage AddFourthProductTowishlist(IList<String> Name)
+        public void AddFourthProductTowishlist(IList<String> Name)
         {
             VerifyProductExist(Name);
             FourthProduct.AssertElementPresent();
             FourthProduct.Click();
-            return new HomePage(_parallelConfig);
         }
 
-        public HomePage goToWishlistPage()
+        public WishListPage goToWishlistPage()
         {
             if (WishlistMenu.IsElementPresent()) { WishlistMenu.Click(); }
 
-            return new HomePage(_parallelConfig);
+            return new WishListPage(_parallelConfig);
         }
                 
     }

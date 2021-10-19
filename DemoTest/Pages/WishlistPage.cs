@@ -54,11 +54,10 @@ namespace DemoTest.Pages
             return false;
         }
 
-        public WishListPage VerifyProductsInWishlist(IList<String> Name)
+        public void VerifyProductsInWishlist(IList<String> Name)
         {
             VerifyPageTitle();
             VerifyProductExistInWIshlist(Name);
-            return new WishListPage(_parallelConfig);
         }
 
         public void CheckForLowestPriceProduct()
@@ -75,11 +74,11 @@ namespace DemoTest.Pages
 
         }
 
-        public WishListPage goToCartPage()
+        public CustomerCartPage goToCartPage()
         {
             if (CartOptions.IsElementPresent()) { CartOptions.Click(); }
 
-            return new WishListPage(_parallelConfig);
+            return new CustomerCartPage(_parallelConfig);
         }
 
     }

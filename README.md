@@ -1,12 +1,18 @@
 # CodilityDemoFrameworkProject
 
 Uses-
--Visual studio 2019
+Visual studio 2019
+
 Selenium(v4.0.0)
+
 NUnit
+
 specflow(v3.9.22)
+
 ExtentReports(v4.1.0)
+
 selenium server
+
 and other supporting packages.
 
 How to run-
